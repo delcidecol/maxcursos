@@ -7,27 +7,38 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
+import com.dycle.maxcursos.entities.Category;
 import com.dycle.maxcursos.entities.Order;
 import com.dycle.maxcursos.entities.User;
 import com.dycle.maxcursos.entities.enums.OrderStatus;
+import com.dycle.maxcursos.repositories.CategoryRepository;
 import com.dycle.maxcursos.repositories.OrderRepository;
 import com.dycle.maxcursos.repositories.UserRepository;
 
 @Configuration
 @Profile("test")
 public class TestConfig implements CommandLineRunner {
+	private final CategoryRepository categoryRepository;
+
 	private final UserRepository userRepository;
 
 	private final OrderRepository orderRepository;
-
-	TestConfig(UserRepository userRepository, OrderRepository orderRepository) {
+	
+	TestConfig(UserRepository userRepository, OrderRepository orderRepository, CategoryRepository categoryRepository) {
 		this.userRepository = userRepository;
 		this.orderRepository = orderRepository;
+		this.categoryRepository = categoryRepository;
 	}
 
 	@Override
 	public void run(String... args) throws Exception {
 
+		Category cat1 = new Category(null, "Electronics");
+		Category cat2 = new Category(null, "Books");
+		Category cat3 = new Category(null, "Computers");
+		
+		categoryRepository.saveAll(Arrays.asList(cat1,cat2,cat3));  // salvando no BD
+		
 		User u1 = new User(null, "Marina de Col", "marinadecol@gmail.com", "99122-1281", "123456");
 		User u2 = new User(null, "Kleverson Ricardo", "ricador@gmail.com", "99124-6978", "321654");
 
@@ -35,6 +46,8 @@ public class TestConfig implements CommandLineRunner {
 		Order o2 = new Order(null, Instant.parse("2019-07-21T03:42:10Z"), OrderStatus.WAITING_PAYMENT, u2);
 		Order o3 = new Order(null, Instant.parse("2019-07-22T15:21:22Z"), OrderStatus.CANCELED, u1);
 
+		
+		
 		userRepository.saveAll(Arrays.asList(u1, u2));
 		orderRepository.saveAll(Arrays.asList(o1, o2, o3));
 
