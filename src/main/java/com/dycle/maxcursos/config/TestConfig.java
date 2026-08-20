@@ -9,10 +9,12 @@ import org.springframework.context.annotation.Profile;
 
 import com.dycle.maxcursos.entities.Category;
 import com.dycle.maxcursos.entities.Order;
+import com.dycle.maxcursos.entities.Product;
 import com.dycle.maxcursos.entities.User;
 import com.dycle.maxcursos.entities.enums.OrderStatus;
 import com.dycle.maxcursos.repositories.CategoryRepository;
 import com.dycle.maxcursos.repositories.OrderRepository;
+import com.dycle.maxcursos.repositories.ProductRepository;
 import com.dycle.maxcursos.repositories.UserRepository;
 
 @Configuration
@@ -24,10 +26,13 @@ public class TestConfig implements CommandLineRunner {
 
 	private final OrderRepository orderRepository;
 	
-	TestConfig(UserRepository userRepository, OrderRepository orderRepository, CategoryRepository categoryRepository) {
+	private final ProductRepository productRepository;
+	
+	TestConfig(UserRepository userRepository, OrderRepository orderRepository, CategoryRepository categoryRepository, ProductRepository productRepository) {
 		this.userRepository = userRepository;
 		this.orderRepository = orderRepository;
 		this.categoryRepository = categoryRepository;
+		this.productRepository = productRepository;
 	}
 
 	@Override
@@ -37,7 +42,14 @@ public class TestConfig implements CommandLineRunner {
 		Category cat2 = new Category(null, "Books");
 		Category cat3 = new Category(null, "Computers");
 		
+		Product p1 = new Product(null, "The Lord of the Rings", "Lorem ipsum dolor sit amet, consectetur.", 90.5, "");
+		Product p2 = new Product(null, "Smart TV", "Nulla eu imperdiet purus. Maecenas ante.", 2190.0, "");
+		Product p3 = new Product(null, "Macbook Pro", "Nam eleifend maximus tortor, at mollis.", 1250.0, "");
+		Product p4 = new Product(null, "PC Gamer", "Donec aliquet odio ac rhoncus cursus.", 1200.0, "");
+		Product p5 = new Product(null, "Rails for Dummies", "Cras fringilla convallis sem vel faucibus.", 100.99, "");
+		
 		categoryRepository.saveAll(Arrays.asList(cat1,cat2,cat3));  // salvando no BD
+		productRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5));
 		
 		User u1 = new User(null, "Marina de Col", "marinadecol@gmail.com", "99122-1281", "123456");
 		User u2 = new User(null, "Kleverson Ricardo", "ricador@gmail.com", "99124-6978", "321654");
