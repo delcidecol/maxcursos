@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.dycle.maxcursos.entities.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,6 +19,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -33,6 +35,9 @@ public class Order implements Serializable {
 	private Instant moment;
 
 	private Integer orderStatus;
+	
+	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL) // no caso de um para um precisamos mapear para ter o mesmo Id
+	private Payment payment;
 
 	@Autowired
 	@ManyToOne
@@ -75,6 +80,13 @@ public class Order implements Serializable {
 
 	public void setMoment(Instant moment) {
 		this.moment = moment;
+	}
+	public Payment getPayment() {
+		return payment;
+	}
+
+	public void setPayment(Payment payment) {
+		this.payment = payment;
 	}
 
 	public OrderStatus getOrderStatus() {
