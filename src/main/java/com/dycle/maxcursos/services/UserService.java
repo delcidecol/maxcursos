@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.dycle.maxcursos.entities.User;
 import com.dycle.maxcursos.repositories.UserRepository;
+import com.dycle.maxcursos.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class UserService {
@@ -22,7 +23,7 @@ public class UserService {
 	}
 	public User findById(Long id) {
 		 Optional<User> obj = repository.findById(id);
-		 return obj.get();
+		 return obj.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 	
 	public User insert(User obj) {
